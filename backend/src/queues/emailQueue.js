@@ -1,5 +1,4 @@
 import { Queue } from 'bullmq';
-import redis from '../config/redis.js';
 import { sendOrderConfirmationEmail } from '../services/emailService.js';
 
 let emailQueue = null;
@@ -7,9 +6,12 @@ let emailQueue = null;
 try {
   const connection = {
     host: process.env.REDIS_HOST || 'localhost',
-    port: process.env.REDIS_PORT || 6379
+    port: process.env.REDIS_PORT || 6379,
+    maxRetriesPerRequest: null,
+    enableOfflineQueue: false,
   };
   emailQueue = new Queue('email-queue', { connection });
+  emailQueue.on('error', () => {});
 } catch (err) {
   // Silent fallback
 }

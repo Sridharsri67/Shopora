@@ -5,7 +5,9 @@ export const startEmailWorker = () => {
   try {
     const connection = {
       host: process.env.REDIS_HOST || 'localhost',
-      port: process.env.REDIS_PORT || 6379
+      port: process.env.REDIS_PORT || 6379,
+      maxRetriesPerRequest: null,
+      enableOfflineQueue: false,
     };
 
     const worker = new Worker(
@@ -18,6 +20,9 @@ export const startEmailWorker = () => {
       },
       { connection }
     );
+
+    // Suppress unhandled error log spam when local Redis is offline
+    worker.on('error', () => {});
 
     worker.on('completed', (job) => {
       console.log(`[BullMQ Worker Completed] Job ${job.id} for Order #${job.data.orderId}`);
