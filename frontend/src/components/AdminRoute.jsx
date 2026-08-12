@@ -7,8 +7,8 @@ export default function AdminRoute({ children }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-neutral-950 flex items-center justify-center text-neutral-400 text-sm">
-        Checking permissions...
+      <div className="min-h-[60vh] flex items-center justify-center text-xs text-neutral-400 font-light">
+        Checking admin permissions...
       </div>
     );
   }

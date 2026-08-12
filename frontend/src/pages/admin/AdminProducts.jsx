@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getProducts, createProduct, deleteProduct } from '../../services/productService';
+import PageTransition from '../../components/PageTransition';
+import Button from '../../components/Button';
 import { Plus, Trash2, Package } from 'lucide-react';
 
 export default function AdminProducts() {
@@ -54,7 +56,7 @@ export default function AdminProducts() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this product?')) return;
+    if (!window.confirm('Delete this product from catalog?')) return;
     try {
       await deleteProduct(id);
       fetchProducts();
@@ -64,120 +66,119 @@ export default function AdminProducts() {
   };
 
   return (
-    <div className="space-y-8 py-6 max-w-6xl mx-auto">
-      <div>
-        <h1 className="text-2xl font-bold text-white tracking-tight">Admin Product Management</h1>
-        <p className="text-xs text-neutral-400 mt-1">Create, view, and remove store products</p>
-      </div>
+    <PageTransition>
+      <div className="space-y-8 py-6 max-w-6xl mx-auto">
+        <div>
+          <span className="text-xs font-semibold uppercase tracking-widest text-neutral-400">Admin</span>
+          <h1 className="text-3xl font-extrabold text-neutral-900 tracking-tight mt-1">Product Catalog Management</h1>
+        </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Create Form */}
-        <form onSubmit={handleCreateProduct} className="bg-neutral-900/60 border border-neutral-800 rounded-2xl p-6 space-y-4 text-xs">
-          <h3 className="font-semibold text-white text-sm flex items-center gap-1.5">
-            <Plus className="w-4 h-4 text-purple-400" /> Create New Product
-          </h3>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          {/* Create Form */}
+          <form onSubmit={handleCreateProduct} className="bg-white border border-neutral-200/80 rounded-3xl p-6 space-y-4 text-xs shadow-xs">
+            <h3 className="font-bold text-neutral-900 text-sm flex items-center gap-1.5">
+              <Plus className="w-4 h-4 text-neutral-700" /> Create New Product
+            </h3>
 
-          <div>
-            <label className="block text-neutral-400 font-medium mb-1">Product Name</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-purple-500"
-              placeholder="e.g. Mechanical Keyboard"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-neutral-400 font-medium mb-1">Category</label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-purple-500"
-            >
-              <option value="Electronics">Electronics</option>
-              <option value="Audio">Audio</option>
-              <option value="Monitors">Monitors</option>
-              <option value="Accessories">Accessories</option>
-            </select>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-neutral-400 font-medium mb-1">Price (₹)</label>
+              <label className="block text-neutral-700 font-medium mb-1">Product Name</label>
               <input
-                type="number"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-purple-500"
-                placeholder="2999"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full bg-white border border-neutral-200 rounded-xl p-2.5 text-neutral-900 focus:outline-none focus:border-neutral-900"
+                placeholder="e.g. Mechanical Keyboard"
                 required
               />
             </div>
+
             <div>
-              <label className="block text-neutral-400 font-medium mb-1">Initial Stock</label>
-              <input
-                type="number"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-purple-500"
-                placeholder="25"
-                required
+              <label className="block text-neutral-700 font-medium mb-1">Category</label>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full bg-white border border-neutral-200 rounded-xl p-2.5 text-neutral-900 focus:outline-none focus:border-neutral-900"
+              >
+                <option value="Electronics">Electronics</option>
+                <option value="Audio">Audio</option>
+                <option value="Monitors">Monitors</option>
+                <option value="Accessories">Accessories</option>
+              </select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-neutral-700 font-medium mb-1">Price (₹)</label>
+                <input
+                  type="number"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="w-full bg-white border border-neutral-200 rounded-xl p-2.5 text-neutral-900 focus:outline-none focus:border-neutral-900"
+                  placeholder="2999"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-neutral-700 font-medium mb-1">Initial Stock</label>
+                <input
+                  type="number"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  className="w-full bg-white border border-neutral-200 rounded-xl p-2.5 text-neutral-900 focus:outline-none focus:border-neutral-900"
+                  placeholder="25"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-neutral-700 font-medium mb-1">Description</label>
+              <textarea
+                rows={2}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="w-full bg-white border border-neutral-200 rounded-xl p-2.5 text-neutral-900 focus:outline-none focus:border-neutral-900"
+                placeholder="Overview description..."
               />
             </div>
-          </div>
 
-          <div>
-            <label className="block text-neutral-400 font-medium mb-1">Description</label>
-            <textarea
-              rows={2}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-purple-500"
-              placeholder="Short product overview..."
-            />
-          </div>
+            <Button type="submit" variant="primary" size="md" loading={submitting} className="w-full">
+              Create Product
+            </Button>
+          </form>
 
-          <button
-            type="submit"
-            disabled={submitting}
-            className="w-full bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2.5 rounded-xl transition-all shadow-lg shadow-purple-600/20"
-          >
-            {submitting ? 'Creating...' : 'Create Product'}
-          </button>
-        </form>
+          {/* Product List */}
+          <div className="lg:col-span-2 space-y-4">
+            <h3 className="font-bold text-neutral-900 text-sm">Product Catalog ({products.length})</h3>
 
-        {/* Product List */}
-        <div className="lg:col-span-2 space-y-4">
-          <h3 className="font-semibold text-white text-sm">Product List ({products.length})</h3>
-
-          {loading ? (
-            <div className="py-8 text-center text-neutral-500 animate-pulse text-xs">Loading products...</div>
-          ) : (
-            <div className="space-y-3">
-              {products.map((prod) => (
-                <div key={prod.id} className="flex items-center justify-between bg-neutral-900/60 border border-neutral-800 p-4 rounded-xl text-xs gap-4">
-                  <div className="flex items-center gap-3">
-                    <img src={prod.imageUrl} alt={prod.name} className="w-12 h-12 object-cover rounded-lg bg-neutral-950" />
-                    <div>
-                      <h4 className="font-semibold text-white">{prod.name}</h4>
-                      <p className="text-neutral-400 mt-0.5">₹{prod.price} &bull; Stock: {prod.inventory ? prod.inventory.quantity : 0}</p>
+            {loading ? (
+              <div className="py-8 text-center text-neutral-400 animate-pulse text-xs">Loading products...</div>
+            ) : (
+              <div className="space-y-3">
+                {products.map((prod) => (
+                  <div key={prod.id} className="flex items-center justify-between bg-white border border-neutral-200/80 p-4 rounded-2xl text-xs gap-4 shadow-2xs">
+                    <div className="flex items-center gap-3">
+                      <img src={prod.imageUrl} alt={prod.name} className="w-12 h-12 object-cover rounded-xl bg-neutral-100 border border-neutral-200/60" />
+                      <div>
+                        <h4 className="font-bold text-neutral-900">{prod.name}</h4>
+                        <p className="text-neutral-500 font-light mt-0.5">₹{prod.price} &bull; Stock: {prod.inventory ? prod.inventory.quantity : 0}</p>
+                      </div>
                     </div>
-                  </div>
 
-                  <button
-                    onClick={() => handleDelete(prod.id)}
-                    className="p-2 text-neutral-500 hover:text-red-400 transition-colors"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+                    <button
+                      onClick={() => handleDelete(prod.id)}
+                      className="p-2 text-neutral-400 hover:text-red-600 transition-colors"
+                      title="Delete Product"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }

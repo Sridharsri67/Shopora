@@ -3,7 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { validateCoupon } from '../services/couponService';
 import CartItem from '../components/CartItem';
-import { ShoppingBag, ArrowRight, Tag, Check, AlertCircle } from 'lucide-react';
+import PageTransition from '../components/PageTransition';
+import Button from '../components/Button';
+import Badge from '../components/Badge';
+import { ShoppingBag, ArrowRight, Check, AlertCircle } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
 
 export default function Cart() {
   const { cartItems, subtotal, clearCart } = useCart();
@@ -32,19 +36,20 @@ export default function Cart() {
 
   if (cartItems.length === 0) {
     return (
-      <div className="py-20 text-center space-y-4 max-w-md mx-auto">
-        <div className="h-16 w-16 bg-neutral-900 border border-neutral-800 rounded-full flex items-center justify-center mx-auto text-neutral-500">
-          <ShoppingBag className="w-8 h-8" />
+      <PageTransition>
+        <div className="py-20 text-center space-y-4 max-w-md mx-auto">
+          <div className="h-16 w-16 bg-neutral-100 border border-neutral-200 rounded-full flex items-center justify-center mx-auto text-neutral-400">
+            <ShoppingBag className="w-8 h-8" />
+          </div>
+          <h2 className="text-2xl font-extrabold text-neutral-900 tracking-tight">Your Cart is Empty</h2>
+          <p className="text-xs text-neutral-500 font-light">Explore our catalog and select items to add to your shopping bag.</p>
+          <Link to="/products">
+            <Button variant="primary" size="md">
+              Explore Products <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
         </div>
-        <h2 className="text-xl font-bold text-white">Your Cart is Empty</h2>
-        <p className="text-xs text-neutral-400">Discover gear and add workspace components to your bag.</p>
-        <Link
-          to="/products"
-          className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-5 py-2.5 rounded-xl transition-colors"
-        >
-          Explore Catalog <ArrowRight className="w-4 h-4" />
-        </Link>
-      </div>
+      </PageTransition>
     );
   }
 
@@ -56,97 +61,97 @@ export default function Cart() {
       state: {
         couponCode: couponResult?.code || null,
         discount: discountAmount,
-        finalTotal
-      }
+        finalTotal,
+      },
     });
   };
 
   return (
-    <div className="space-y-8 py-6 max-w-5xl mx-auto">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white tracking-tight">Shopping Cart ({cartItems.length} items)</h1>
-        <button onClick={clearCart} className="text-xs text-neutral-400 hover:text-red-400 transition-colors">
-          Clear Cart
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Item List */}
-        <div className="lg:col-span-2 space-y-4">
-          {cartItems.map((item) => (
-            <CartItem key={item.id} item={item} />
-          ))}
-        </div>
-
-        {/* Summary Card */}
-        <div className="bg-neutral-900/60 border border-neutral-800 rounded-2xl p-6 space-y-6">
-          <h3 className="font-semibold text-white text-sm">Order Summary</h3>
-
-          {/* Coupon Code Input */}
-          <form onSubmit={handleApplyCoupon} className="space-y-2">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="Coupon Code (e.g. SAVE10)"
-                value={couponCode}
-                onChange={(e) => setCouponCode(e.target.value)}
-                className="flex-1 bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2 text-xs text-white uppercase focus:outline-none focus:border-indigo-500"
-              />
-              <button
-                type="submit"
-                disabled={validating}
-                className="bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-semibold px-3 py-2 rounded-xl transition-colors shrink-0"
-              >
-                Apply
-              </button>
-            </div>
-
-            {couponResult && (
-              <div className="flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/10 p-2.5 rounded-lg border border-emerald-500/20">
-                <Check className="w-3.5 h-3.5" /> Coupon <b>{couponResult.code}</b> applied! (₹{discountAmount} OFF)
-              </div>
-            )}
-
-            {couponError && (
-              <div className="flex items-center gap-1.5 text-xs text-red-400 bg-red-500/10 p-2.5 rounded-lg border border-red-500/20">
-                <AlertCircle className="w-3.5 h-3.5" /> {couponError}
-              </div>
-            )}
-          </form>
-
-          {/* Pricing Details */}
-          <div className="space-y-2 border-t border-neutral-800 pt-4 text-xs">
-            <div className="flex justify-between text-neutral-400">
-              <span>Subtotal</span>
-              <span className="font-semibold text-white">₹{subtotal.toLocaleString()}</span>
-            </div>
-
-            {discountAmount > 0 && (
-              <div className="flex justify-between text-emerald-400">
-                <span>Coupon Discount ({couponResult?.code})</span>
-                <span>-₹{discountAmount.toLocaleString()}</span>
-              </div>
-            )}
-
-            <div className="flex justify-between text-neutral-400">
-              <span>Shipping</span>
-              <span className="text-emerald-400 font-semibold">FREE</span>
-            </div>
-
-            <div className="flex justify-between text-sm font-bold text-white border-t border-neutral-800 pt-3">
-              <span>Total Amount</span>
-              <span>₹{finalTotal.toLocaleString()}</span>
-            </div>
+    <PageTransition>
+      <div className="space-y-8 py-6 max-w-5xl mx-auto">
+        <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-widest text-neutral-400">Shopping Bag</span>
+            <h1 className="text-3xl font-extrabold text-neutral-900 tracking-tight mt-1">Your Items ({cartItems.length})</h1>
           </div>
-
-          <button
-            onClick={handleProceedToCheckout}
-            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 text-xs"
-          >
-            Proceed to Checkout <ArrowRight className="w-4 h-4" />
+          <button onClick={clearCart} className="text-xs text-neutral-400 hover:text-red-600 transition-colors">
+            Clear Bag
           </button>
         </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          {/* Cart Item List */}
+          <div className="lg:col-span-2 space-y-4">
+            <AnimatePresence>
+              {cartItems.map((item) => (
+                <CartItem key={item.id} item={item} />
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {/* Editorial Summary Box */}
+          <div className="bg-neutral-50 border border-neutral-200 rounded-3xl p-6 space-y-6 shadow-xs">
+            <h3 className="font-bold text-neutral-900 text-sm tracking-tight">Order Summary</h3>
+
+            {/* Coupon Code Input Form */}
+            <form onSubmit={handleApplyCoupon} className="space-y-2">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Coupon Code (e.g. SAVE10)"
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value)}
+                  className="flex-1 bg-white border border-neutral-200 rounded-xl px-3 py-2 text-xs text-neutral-900 uppercase font-bold focus:outline-none focus:border-neutral-900"
+                />
+                <Button type="submit" variant="secondary" size="sm" loading={validating}>
+                  Apply
+                </Button>
+              </div>
+
+              {couponResult && (
+                <div className="flex items-center gap-1.5 text-xs text-emerald-800 bg-emerald-50 p-2.5 rounded-xl border border-emerald-200">
+                  <Check className="w-3.5 h-3.5 text-emerald-600" /> Coupon <b>{couponResult.code}</b> applied! (-₹{discountAmount})
+                </div>
+              )}
+
+              {couponError && (
+                <div className="flex items-center gap-1.5 text-xs text-red-700 bg-red-50 p-2.5 rounded-xl border border-red-200">
+                  <AlertCircle className="w-3.5 h-3.5 text-red-600" /> {couponError}
+                </div>
+              )}
+            </form>
+
+            {/* Pricing Details */}
+            <div className="space-y-2.5 border-t border-neutral-200 pt-4 text-xs font-light">
+              <div className="flex justify-between text-neutral-600">
+                <span>Subtotal</span>
+                <span className="font-semibold text-neutral-900">₹{subtotal.toLocaleString()}</span>
+              </div>
+
+              {discountAmount > 0 && (
+                <div className="flex justify-between text-emerald-700">
+                  <span>Coupon Discount ({couponResult?.code})</span>
+                  <span>-₹{discountAmount.toLocaleString()}</span>
+                </div>
+              )}
+
+              <div className="flex justify-between text-neutral-600">
+                <span>Shipping</span>
+                <span className="text-emerald-700 font-semibold uppercase text-[11px]">Free Shipping</span>
+              </div>
+
+              <div className="flex justify-between text-base font-bold text-neutral-900 border-t border-neutral-200 pt-3">
+                <span>Total Amount</span>
+                <span>₹{finalTotal.toLocaleString()}</span>
+              </div>
+            </div>
+
+            <Button variant="primary" size="lg" onClick={handleProceedToCheckout} className="w-full">
+              Proceed to Checkout <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }
