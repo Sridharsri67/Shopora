@@ -1,6 +1,8 @@
-# Shopora — Full-Stack E-Commerce & Operations Portal 🛒
+# 🛒 Shopora — Full-Stack E-Commerce & Operations Portal
 
-A modern, production-grade full-stack E-Commerce application built for high-performance product catalog management, authoritative backend pricing, Stripe payment webhooks, Redis caching, BullMQ background queues, product reviews, and 4-tier Role-Based Access Control (RBAC).
+> **Production-grade full-stack E-Commerce application built with Node.js, Express, React, Vite, PostgreSQL, Prisma ORM, Redis, BullMQ, and Stripe.**
+
+![Node.js](https://img.shields.io/badge/Node.js-Express-6DB33F?style=flat-square) ![React](https://img.shields.io/badge/React-Vite-007ACC?style=flat-square) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Prisma-336791?style=flat-square) ![Redis](https://img.shields.io/badge/Redis-BullMQ-DC382D?style=flat-square) ![Stripe](https://img.shields.io/badge/Stripe-Payments-635BFF?style=flat-square) ![License](https://img.shields.io/badge/License-MIT-44CC11?style=flat-square)
 
 ---
 
