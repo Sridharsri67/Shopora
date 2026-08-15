@@ -16,8 +16,8 @@ router.post('/', authenticate, createOrder);
 router.get('/', authenticate, getMyOrders);
 router.get('/:id', authenticate, getOrderById);
 
-// Admin order routes
-router.get('/admin/all', authenticate, authorizeRoles('ADMIN'), getAllOrdersAdmin);
-router.put('/admin/:id/status', authenticate, authorizeRoles('ADMIN'), updateOrderStatusAdmin);
+// Admin & Delivery order management routes
+router.get('/admin/all', authenticate, authorizeRoles('ADMIN', 'DELIVERY'), getAllOrdersAdmin);
+router.put('/admin/:id/status', authenticate, authorizeRoles('ADMIN', 'DELIVERY'), updateOrderStatusAdmin);
 
 export default router;

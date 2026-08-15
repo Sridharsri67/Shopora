@@ -9,7 +9,9 @@ datasource db {
 
 enum Role {
   CUSTOMER
+  VENDOR
   ADMIN
+  DELIVERY
 }
 
 enum OrderStatus {

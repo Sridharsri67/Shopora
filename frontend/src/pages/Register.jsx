@@ -9,6 +9,7 @@ export default function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('CUSTOMER');
   const [error, setError] = useState('');
   const { register, loading } = useAuth();
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function Register() {
     e.preventDefault();
     setError('');
     try {
-      await register({ name, email, password });
+      await register({ name, email, password, role });
       navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Registration failed');
@@ -65,6 +66,19 @@ export default function Register() {
                 placeholder="john@example.com"
                 required
               />
+            </div>
+
+            <div>
+              <label className="block text-neutral-700 font-medium mb-1">Account Role</label>
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-full bg-white border border-neutral-200 rounded-xl p-3 text-neutral-900 focus:outline-none focus:border-neutral-900 font-medium"
+              >
+                <option value="CUSTOMER">Customer (Shopping)</option>
+                <option value="VENDOR">Vendor (Product Management)</option>
+                <option value="DELIVERY">Delivery Partner (Order Processing)</option>
+              </select>
             </div>
 
             <div>

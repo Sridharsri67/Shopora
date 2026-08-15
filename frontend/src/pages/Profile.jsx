@@ -28,7 +28,17 @@ export default function Profile() {
               <span className="text-neutral-500 font-medium flex items-center gap-2">
                 <Shield className="w-4 h-4 text-neutral-700" /> Account Role
               </span>
-              <Badge variant={isAdmin ? 'dark' : 'neutral'}>
+              <Badge
+                variant={
+                  user?.role === 'ADMIN'
+                    ? 'dark'
+                    : user?.role === 'VENDOR'
+                    ? 'warning'
+                    : user?.role === 'DELIVERY'
+                    ? 'success'
+                    : 'neutral'
+                }
+              >
                 {user?.role}
               </Badge>
             </div>

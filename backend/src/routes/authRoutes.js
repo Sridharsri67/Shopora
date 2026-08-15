@@ -27,4 +27,18 @@ router.get('/admin-only', authenticate, authorizeRoles('ADMIN'), (req, res) => {
   });
 });
 
+router.get('/vendor-only', authenticate, authorizeRoles('VENDOR', 'ADMIN'), (req, res) => {
+  res.status(200).json({
+    message: 'Vendor access granted',
+    user: req.user
+  });
+});
+
+router.get('/delivery-only', authenticate, authorizeRoles('DELIVERY', 'ADMIN'), (req, res) => {
+  res.status(200).json({
+    message: 'Delivery partner access granted',
+    user: req.user
+  });
+});
+
 export default router;

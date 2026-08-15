@@ -34,7 +34,36 @@ async function main() {
     }
   });
 
-  console.log('✅ Users seeded:', { admin: admin.email, customer: customer.email });
+  // 4. Vendor User
+  const vendor = await prisma.user.upsert({
+    where: { email: 'vendor@example.com' },
+    update: {},
+    create: {
+      name: 'Apex Vendor',
+      email: 'vendor@example.com',
+      passwordHash,
+      role: 'VENDOR'
+    }
+  });
+
+  // 5. Delivery Partner User
+  const delivery = await prisma.user.upsert({
+    where: { email: 'delivery@example.com' },
+    update: {},
+    create: {
+      name: 'Express Delivery',
+      email: 'delivery@example.com',
+      passwordHash,
+      role: 'DELIVERY'
+    }
+  });
+
+  console.log('✅ Users seeded:', {
+    admin: admin.email,
+    customer: customer.email,
+    vendor: vendor.email,
+    delivery: delivery.email
+  });
 
   // 4. Products & Inventory
   const productsData = [

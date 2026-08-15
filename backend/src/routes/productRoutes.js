@@ -15,9 +15,9 @@ const router = express.Router();
 router.get('/', getProducts);
 router.get('/:id', getProductById);
 
-// Admin-only management routes
-router.post('/', authenticate, authorizeRoles('ADMIN'), createProduct);
-router.put('/:id', authenticate, authorizeRoles('ADMIN'), updateProduct);
-router.delete('/:id', authenticate, authorizeRoles('ADMIN'), deleteProduct);
+// Admin & Vendor management routes
+router.post('/', authenticate, authorizeRoles('ADMIN', 'VENDOR'), createProduct);
+router.put('/:id', authenticate, authorizeRoles('ADMIN', 'VENDOR'), updateProduct);
+router.delete('/:id', authenticate, authorizeRoles('ADMIN', 'VENDOR'), deleteProduct);
 
 export default router;
